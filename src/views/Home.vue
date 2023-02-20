@@ -60,23 +60,27 @@
         data.append('usuario', this.Admin.usuario)
         data.append('senha', this.Admin.senha)
 
-        axios.post('http://localhost/Projetos/register-432/src/Api/api.php?action=login', data).then((res) => {
+        axios
+          .post(
+            'http://localhost/Projetos/register-432/src/Api/api.php?action=login', 
+            data
+          )
+          
+          .then((res) => {
 
           
-          if (res.error) {
-            console.log('erro', res)
-          } else {
-            console.log('sucesso', res)
-            this.$router.push('/dashboard')
-          }
+            if (res.data.error) {
+              alert(res.data.mensagem)
+            } else {
+              alert(res.data.mensagem)
+              this.$router.push('/dashboard')
+            }
 
         }).catch((err)=> {
 
           console.log('erro', err)
 
         })
-
-        alert('logado')
       }
     }
 

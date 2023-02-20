@@ -21,7 +21,7 @@
         exit(0);
     }
     
-    $res = array('error' => false);
+    $res = array('erro' => false);
     $action='';
     
     if (isset($_GET['action'])) {
@@ -30,12 +30,12 @@
     }
 
     if ($action == 'login') {
-        $username = $_POST['usuario'];
+        $usuario = $_POST['usuario'];
         $senha = $_POST['senha'];
         $sql = "Select * from `admin` where usuario='$usuario' AND senha='$senha'";
 
-        $res = $conn -> query($sql);
-        $num = mysqli_num_rows($res);
+        $result = $conn -> query($sql);
+        $num = mysqli_num_rows($result);
 
         if ($num > 0) {
             $res['mensagem']="Usuário logado com sucesso!";
@@ -44,5 +44,11 @@
             $res['mensagem']="E-mail ou senha incorretos!";
         }
     }
+
+    $conn -> close();
+
+    header("Content-type: application/json");
+    echo json_encode($res);
+    die();
 
 ?>
