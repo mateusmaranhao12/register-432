@@ -21,7 +21,7 @@
         exit(0);
     }
     
-    $res = array('erro' => false);
+    $res = array('error' => false);
     $action='';
     
     if (isset($_GET['action'])) {

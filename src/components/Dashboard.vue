@@ -1,21 +1,44 @@
 <template>
-    <div>
-      <div class="container">
-        <div class="row">
-          <div class="card col-md-12">
-                <div class="card-heading bg-info p-3">
-                    <h4 class="h4 text-center text-white">
-                        Bem vindo ao Dashboard
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <p class="p text-center">Bem vindo ao painel do administrador</p>
-                </div>
+  <div>
+    <nav class="p-3 navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">Dashboard</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <router-link class="nav-link" to="/dashboard">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/usuarios">Usuarios</router-link>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <div class="mt-5">
+            <router-view></router-view>
           </div>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
 
