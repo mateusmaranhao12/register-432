@@ -48,8 +48,8 @@
     data() {
       return {
         Admin: {
-          usuario: null,
-          senha: null
+          usuario: '',
+          senha: ''
         }
       }
     },
