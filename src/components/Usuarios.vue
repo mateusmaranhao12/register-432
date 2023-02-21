@@ -4,7 +4,7 @@
     <div class="my-4">
         <div class="form-row">
             <div class="form-group col-md-12 col-sm-12">
-                <button class="btn btn-success btn-sm" @click="adicionarNovo()">Adicionar Usuário</button>
+                <button class="btn btn-success btn-sm" @click="adicionarNovo()"><i class="fa-solid fa-plus"></i> Adicionar Usuário</button>
             </div>
         </div>
         <div class="form-row">
@@ -26,9 +26,9 @@
                                 <td>feradourada@gmail.com</td>
                                 <td>22/02/2022</td>
                                 <td> 
-                                    <button class="btn btn-danger">Remover</button>
-                                    <button class="btn btn-info">Editar</button>
-                                    <button class="btn btn-success">info</button>
+                                    <button class="m-1 btn btn-danger"><i class="fa-sharp fa-solid fa-trash"></i></button>
+                                    <button class="m-1 btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button class="m-1 btn btn-success"><i class="fa-solid fa-circle-info"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -43,9 +43,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="editLabel">Adicionar novo membro</h5>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <form action="" method="POST">
@@ -94,8 +92,8 @@
                     </form>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Adicionar Usuário</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="adicionarUsuario()">Adicionar Usuário</button>
                     </div>
 
                 </div>
@@ -109,6 +107,7 @@
 
 <script>
 
+import axios from 'axios'
 export default {
   name: "Usuarios",
   data() {
@@ -125,10 +124,40 @@ export default {
   },
 
   methods:{
+
     adicionarNovo(){
-        
       window.jQuery('#Usuarios').modal('show')
-      
+    },
+
+    adicionarUsuario() {
+
+        let data = new FormData()
+        data.append('nome', this.usuarios.nome)
+        data.append('email', this.usuarios.email)
+        data.append('educacao', this.usuarios.educacao)
+        data.append('genero', this.usuarios.genero)
+        axios.post(
+            'http://localhost/Projetos/register-432/src/Api/api.php?action=adicionarusuario', 
+            data
+        ).then((res) => {
+            if(res.data.error) {
+                alert('Erro')
+            } else {
+                window.jQuery('#Usuarios').modal('hide')
+                alert(res.data.mensagem)
+                this.limparFormulario()
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    },
+
+    limparFormulario() {
+        this.usuarios.nome = ''
+        this.usuarios.email = ''
+        this.usuarios.educacao = ''
+        this.usuarios.genero = ''
     }
     
   }

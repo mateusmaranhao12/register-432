@@ -45,6 +45,37 @@
         }
     }
 
+    if ($action == 'adicionarusuario') {
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
+        $educacao = $_POST['educacao'];
+        $genero = $_POST['genero'];
+
+        $sql = "INSERT INTO `usuarios` (
+                `id`,
+                `nome`,
+                `email`,
+                `educacao`,
+                `genero`
+            ) VALUES (
+                NULL, 
+                '$nome', 
+                '$email', 
+                '$educacao', 
+                '$genero'
+        )";
+
+        $result=$conn->query($sql);
+
+        if ($result === true) {
+            $res['error']=false;
+            $res['mensagem']="Usuário adicionado com sucesso";
+        } else {
+            $res['error']=true;
+            $res['mensagem']="Não foi possível adicionar este usuário!";
+        }
+    }
+
     $conn -> close();
 
     header("Content-type: application/json");
