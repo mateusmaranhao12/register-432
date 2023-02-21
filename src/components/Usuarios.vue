@@ -15,19 +15,18 @@
                             <th>ID</th>
                             <th>Nome</th>
                             <th>Email</th>
-                            <th>Educ</th>
+                            <th>Educação</th>
                             <th>Ação</th>
                         </thead>
                         <tbody>
-                        
-                            <tr>
-                                <td>1</td>
-                                <td>Mateus</td>
-                                <td>feradourada@gmail.com</td>
-                                <td>22/02/2022</td>
+                            <tr v-for="data in usuarios_cadastrados">
+                                <td>{{ data.id }}</td>
+                                <td>{{ data.nome }}</td>
+                                <td>{{ data.email }}</td>
+                                <td>{{data.educacao}}</td>
                                 <td> 
                                     <button class="m-1 btn btn-danger"><i class="fa-sharp fa-solid fa-trash"></i></button>
-                                    <button class="m-1 btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button @click="editarUsuario(data)" class="m-1 btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                                     <button class="m-1 btn btn-success"><i class="fa-solid fa-circle-info"></i></button>
                                 </td>
                             </tr>
@@ -41,7 +40,8 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editLabel">Adicionar novo membro</h5>
+                        <h5 class="modal-title" id="editLabel" v-show="!editModal">Adicionar novo membro</h5>
+                        <h5 class="modal-title" id="editLabel" v-show="!addModal">Editar informações</h5>
 
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -93,7 +93,8 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" @click="adicionarUsuario()">Adicionar Usuário</button>
+                        <button v-if="!editModal" type="button" class="btn btn-primary" @click="adicionarUsuario()">Adicionar Usuário</button>
+                        <button v-if="!addModal" type="button" class="btn btn-success" @click="salvarAlteracoes()">Salvar Alterações</button>
                     </div>
 
                 </div>
@@ -113,19 +114,28 @@ export default {
   data() {
     return {
         modal: '',
+        editModal: false,
+        addModal: true,
         educacao: ["Matric", "Inter", "Bachlor", "Master"],
         usuarios: {
             nome: '',
             email: '',
             educacao: '',
             genero: ''
-        }
+        },
+
+        usuarios_cadastrados: []
     }
+  },
+
+  created() {
+    this.getUsuarios()
   },
 
   methods:{
 
     adicionarNovo(){
+        this.editModal = false
       window.jQuery('#Usuarios').modal('show')
     },
 
@@ -146,11 +156,37 @@ export default {
                 window.jQuery('#Usuarios').modal('hide')
                 alert(res.data.mensagem)
                 this.limparFormulario()
+                this.getUsuarios()
             }
         }).catch((err) => {
             console.log(err)
         })
 
+    },
+
+    getUsuarios() {
+        axios.get('http://localhost/Projetos/register-432/src/Api/api.php?action=getusuarios').then((res) => {
+            console.log(res.data.user_Data)
+            this.usuarios_cadastrados = res.data.user_Data
+        }) .catch((err) => {
+            console.log(err)
+        })
+    },
+
+    editarUsuario(usuario_id) {
+        this.addModal = false
+        this.editModal = true
+
+        window.jQuery('#Usuarios').modal('show')
+        this.usuarios = usuario_id
+    },
+
+    salvarAlteracoes(usuario_id) {
+        this.addModal = false
+        this.editModal = true
+
+        window.jQuery('#Usuarios').modal('hide')
+        this.usuarios = usuario_id
     },
 
     limparFormulario() {

@@ -68,11 +68,30 @@
         $result=$conn->query($sql);
 
         if ($result === true) {
-            $res['error']=false;
-            $res['mensagem']="Usuário adicionado com sucesso";
+            $res['error'] = false;
+            $res['mensagem'] = "Usuário adicionado com sucesso";
         } else {
-            $res['error']=true;
-            $res['mensagem']="Não foi possível adicionar este usuário!";
+            $res['error'] = true;
+            $res['mensagem'] = "Não foi possível adicionar este usuário!";
+        }
+    }
+
+    if ($action == 'getusuarios') {
+        $sql = "SELECT * FROM `usuarios`";
+        $result = $conn->query($sql);
+        $num = mysqli_num_rows($result);
+        $userData = array();
+
+        if($num > 0) {
+            while($row = $result -> fetch_assoc()) {
+                array_push($userData, $row);
+
+                $res['error'] = false;
+                $res['user_Data'] = $userData;
+            }
+        } else {
+            $res['error'] = false;
+            $res['mensagem']="Usuário não encontrado";
         }
     }
 
